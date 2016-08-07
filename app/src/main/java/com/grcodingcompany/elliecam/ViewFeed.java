@@ -16,6 +16,7 @@ import java.util.TimerTask;
 public class ViewFeed extends AppCompatActivity {
 
     SharedPreferences settings;
+    Timer refreshTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,11 @@ public class ViewFeed extends AppCompatActivity {
         settings = PreferenceManager.getDefaultSharedPreferences(ViewFeed.this);
 
         fetchNewSnapshot();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         TimerTask task = new TimerTask() {
             @Override
@@ -35,7 +41,26 @@ public class ViewFeed extends AppCompatActivity {
             }
         };
 
-        new Timer().scheduleAtFixedRate(task, 500, 500);
+
+        refreshTimer = new Timer();
+        refreshTimer.scheduleAtFixedRate(task, 250, 250);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (refreshTimer != null) {
+            refreshTimer.cancel();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        refreshTimer.cancel();
+        refreshTimer = null;
     }
 
     private void fetchNewSnapshot() {
