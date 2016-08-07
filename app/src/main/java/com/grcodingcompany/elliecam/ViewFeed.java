@@ -39,8 +39,18 @@ public class ViewFeed extends AppCompatActivity {
     }
 
     private void fetchNewSnapshot() {
-        String url = settings.getString("camera_url", "") + "/snapshot.cgi?user=" + settings.getString("camera_username", "") + "&pwd=" + settings.getString("camera_password", "");
-        new ImageFetcher((ImageView) findViewById(R.id.imageView)).execute(url);
+        if (areSettingsReady()) {
+            String url = settings.getString("camera_url", "") +
+                    "/snapshot.cgi?user=" + settings.getString("camera_username", "") +
+                    "&pwd=" + settings.getString("camera_password", "");
+            new ImageFetcher((ImageView) findViewById(R.id.imageView)).execute(url);
+        }
+    }
+
+    private boolean areSettingsReady() {
+        return (settings.getString("camera_url", "") +
+                settings.getString("camera_username", "") +
+                settings.getString("camera_password", "")).length() > 0;
     }
 
     @Override
