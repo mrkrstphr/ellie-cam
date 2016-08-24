@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.grcodingcompany.elliecam"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 23
         versionCode 3
         versionName "1.5.0"
