@@ -33,6 +33,7 @@
         android:gravity="center"
         android:text="@string/no_cameras"
         android:textSize="28sp"
+        android:padding="20dp"
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp" />
 
