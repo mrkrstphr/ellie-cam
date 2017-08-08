@@ -46,27 +46,7 @@ public class FeedsActivity extends AppCompatActivity
         CamerasAdapter camerasAdapter = new CamerasAdapter(this);
         gridview.setAdapter(camerasAdapter);
 
-        List<Camera> sampleItems = new ArrayList<>();
-
-        Camera camera1 = new Camera();
-        camera1.name = "Camera 1";
-        camera1.status = true;
-        camera1.thumbnailSnapshot = "snapshot";
-
-        Camera camera2 = new Camera();
-        camera2.name = "Camera 2";
-        camera2.status = true;
-        camera2.thumbnailSnapshot = "snapshot2";
-
-        Camera camera3 = new Camera();
-        camera3.name = "Camera 3";
-        camera3.status = false;
-
-        sampleItems.add(camera1);
-        sampleItems.add(camera2);
-        sampleItems.add(camera3);
-
-        camerasAdapter.setItems(sampleItems);
+        camerasAdapter.setItems(Camera.getAll());
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -76,7 +56,6 @@ public class FeedsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
 
         TextView noCamerasNotice = (TextView) findViewById(R.id.no_cameras);
 

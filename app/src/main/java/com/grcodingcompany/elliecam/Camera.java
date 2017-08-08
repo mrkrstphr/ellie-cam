@@ -27,17 +27,17 @@ public class Camera extends Model {
     @Column
     public boolean status;
 
-//    public static List<Camera> getAll() {
-//        return new Select()
-//                .from(Camera.class)
-//                .orderBy("name ASC")
-//                .execute();
-//    }
-//
-//    public static Camera find(Long id) {
-//        return new Select()
-//                .from(Camera.class)
-//                .where("Id = ?", id)
-//                .executeSingle();
-//    }
+    public static List<Camera> getAll() {
+        return new Select()
+                .from(Camera.class)
+                .orderBy("name ASC")
+                .execute();
+    }
+
+    public static Camera find(Long id) {
+        return new Select()
+                .from(Camera.class)
+                .where("Id = ?", id)
+                .executeSingle();
+    }
 }
