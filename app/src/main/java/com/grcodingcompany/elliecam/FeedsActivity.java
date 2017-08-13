@@ -2,8 +2,6 @@ package com.grcodingcompany.elliecam;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,16 +12,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FeedsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    static final int ADD_CAMERA = 1;
+    static final int EDIT_CAMERA = 2;
+
+    ListView cameraList;
+    CamerasAdapter camerasAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,24 +41,24 @@ public class FeedsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        final ListView gridview = (ListView) findViewById(R.id.gridview);
-        CamerasAdapter camerasAdapter = new CamerasAdapter(this);
-        gridview.setAdapter(camerasAdapter);
+        cameraList = (ListView) findViewById(R.id.gridview);
+        camerasAdapter = new CamerasAdapter(this);
+        cameraList.setAdapter(camerasAdapter);
 
-        camerasAdapter.setItems(Camera.getAll());
+        refreshCameras();
 
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        cameraList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(FeedsActivity.this, ViewCameraActivity.class);
-                Camera selected = (Camera) gridview.getAdapter().getItem(position);
+                Camera selected = (Camera) cameraList.getAdapter().getItem(position);
                 intent.putExtra("camera", selected.getId());
-                startActivity(intent);
+                startActivityForResult(intent, EDIT_CAMERA);
             }
         });
 
         TextView noCamerasNotice = (TextView) findViewById(R.id.no_cameras);
 
-        gridview.setVisibility(camerasAdapter.getCount() > 0 ? View.VISIBLE : View.GONE);
+        cameraList.setVisibility(camerasAdapter.getCount() > 0 ? View.VISIBLE : View.GONE);
         noCamerasNotice.setVisibility(camerasAdapter.getCount() > 0 ? View.GONE : View.VISIBLE);
     }
 
@@ -75,16 +74,12 @@ public class FeedsActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.feeds, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -102,7 +97,8 @@ public class FeedsActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_add_camera) {
-            // Handle the camera action
+            Intent intent = new Intent(FeedsActivity.this, AddCameraActivity.class);
+            startActivityForResult(intent, ADD_CAMERA);
         } else if (id == R.id.nav_settings) {
 
         }
@@ -110,5 +106,19 @@ public class FeedsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case ADD_CAMERA:
+            case EDIT_CAMERA:
+                refreshCameras();
+                break;
+        }
+    }
+
+    private void refreshCameras() {
+        camerasAdapter.setItems(Camera.getAll());
+        camerasAdapter.notifyDataSetChanged();
     }
 }
