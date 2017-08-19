@@ -40,12 +40,14 @@ public class CamerasAdapter extends BaseAdapter {
     private static class Holder
     {
         TextView cameraName;
-        ImageView cameraPreview;
+        CameraFeedImageView cameraPreview;
     }
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
+
+        Camera camera = mCameras.get(position);
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.camera_grid_item, null);
@@ -53,14 +55,13 @@ public class CamerasAdapter extends BaseAdapter {
             holder = new Holder();
 
             holder.cameraName = (TextView) convertView.findViewById(R.id.cameraName);
-            holder.cameraPreview = (ImageView) convertView.findViewById(R.id.cameraPreview);
+            holder.cameraPreview = (CameraFeedImageView) convertView.findViewById(R.id.cameraPreview);
+            holder.cameraPreview.setCamera(camera);
 
             convertView.setTag(holder);
         } else {
             holder = (Holder)convertView.getTag();
         }
-
-        Camera camera = mCameras.get(position);
 
         holder.cameraName.setText(camera.name);
 
