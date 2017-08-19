@@ -3,13 +3,11 @@ package com.grcodingcompany.elliecam;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ViewCameraActivity extends AppCompatActivity
         implements ConfirmRemoveCameraDialogFragment.ConfirmRemoveCameraDialogListener {
@@ -24,12 +22,6 @@ public class ViewCameraActivity extends AppCompatActivity
         camera = Camera.find(getIntent().getLongExtra("camera", 0));
 
         setTitle(camera.name);
-
-        TextView status = (TextView) findViewById(R.id.cameraStatus);
-        if (status != null) {
-            status.setTextColor(ContextCompat.getColor(getApplicationContext(), camera.status ? R.color.online : R.color.offline));
-            status.setText(camera.status ? R.string.online : R.string.offline);
-        }
 
         ImageView cameraPreview = (ImageView) findViewById(R.id.cameraPreview);
 

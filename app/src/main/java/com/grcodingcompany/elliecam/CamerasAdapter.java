@@ -65,10 +65,6 @@ public class CamerasAdapter extends BaseAdapter {
 
         holder.cameraName.setText(camera.name);
 
-        TextView status = (TextView) convertView.findViewById(R.id.cameraStatus);
-        status.setTextColor(ContextCompat.getColor(convertView.getContext(), camera.status ? R.color.online : R.color.offline));
-        status.setText(camera.status ? R.string.online : R.string.offline);
-
         if (camera.thumbnailSnapshot == null) {
             holder.cameraPreview.setImageResource(R.drawable.no_preview);
         } else {
